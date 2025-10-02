@@ -1,15 +1,12 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from flask import Flask
 import os
 
-class MyHandler(SimpleHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(b"<h1>Hello, DevOps Hunter!</h1><p>You built this container yourself.</p>")
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    server = HTTPServer(("", port), MyHandler)
-    print(f"Server running on port {port}...")
-    server.serve_forever()
+@app.route('/')
+def hello():
+    return "<h1>DevOps Hunter у продакшені!</h1><p>Цей сайт розгорнуто автоматично.</p>"
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
