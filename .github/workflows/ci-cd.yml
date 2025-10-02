@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r web-app/requirements.txt
+
+      - name: Run a simple test
+        run: |
+          python -c "import sys; from flask import Flask; print('Flask імпортовано успішно')"
+
+      - name: Build Docker image
+        run: |
+          docker build -t web-app ./web-app
